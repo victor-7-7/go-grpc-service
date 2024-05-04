@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go-course/grpc-service/internal/db"
 	"go-course/grpc-service/internal/rocket"
+	"go-course/grpc-service/internal/transport/grpc"
 	"log"
 )
 
@@ -19,7 +20,12 @@ func Run() error {
 		log.Println("Failed to migrate rocket store")
 		return err
 	}
-	_ = rocket.New(rocketStore)
+	rktService := rocket.New(rocketStore)
+	rktHandler := grpc.New(rktService)
+
+	if err := rktHandler.Serve(); err != nil {
+		return err
+	}
 
 	return nil
 }

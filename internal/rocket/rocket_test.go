@@ -55,7 +55,7 @@ func TestRocketService(t *testing.T) {
 			Return(nil)
 
 		rocketService := New(rocketStoreMock)
-		err := rocketService.DeleteRocket(id)
+		err := rocketService.DeleteRocket(context.Background(), id)
 		assert.NoError(t, err)
 	})
 }
