@@ -3,40 +3,44 @@
 
 package rocket
 
-import "context"
+import (
+	"context"
+	"log"
+)
 
-// Rocket - should contain the definition of our rocket
+// Rocket - should contain the definition of our rocket.
 type Rocket struct {
-	ID      string `json:"id"`
+	Id      string `json:"id"`
 	Name    string `json:"name"`
 	Type    string `json:"type"`
 	Flights int    `json:"flights"`
 }
 
-// Store - defines the interface we expect our database
+// Store - defines the interface we expect our database.
 // implementation to follow
 type Store interface {
-	GetRocketByID(id string) (Rocket, error)
+	GetRocketById(id string) (Rocket, error)
 	InsertRocket(rkt Rocket) (Rocket, error)
 	DeleteRocket(id string) error
 }
 
-// Service - our rocket service, responsible for updating
+// Service - our rocket service, responsible for updating.
 // the rocket inventory
 type Service struct {
 	Store Store `json:"store"`
 }
 
-// New - returns a new instance of our rocket service
+// New - returns a new instance of our rocket service.
 func New(store Store) Service {
 	return Service{
 		Store: store,
 	}
 }
 
-// GetRocketByID - retrieves the rocket based on the ID from the store
-func (s Service) GetRocketByID(ctx context.Context, id string) (Rocket, error) {
-	rkt, err := s.Store.GetRocketByID(id)
+// GetRocketById - retrieves the rocket based on the id from the store.
+func (s Service) GetRocketById(ctx context.Context, id string) (Rocket, error) {
+	log.Println("Service | Get Rocket by id:", id)
+	rkt, err := s.Store.GetRocketById(id)
 	if err != nil {
 		return Rocket{}, err
 	}
@@ -45,6 +49,7 @@ func (s Service) GetRocketByID(ctx context.Context, id string) (Rocket, error) {
 
 // InsertRocket - inserts a new rocket into the store.
 func (s Service) InsertRocket(ctx context.Context, rkt Rocket) (Rocket, error) {
+	log.Println("Service | Insert Rocket")
 	rkt, err := s.Store.InsertRocket(rkt)
 	if err != nil {
 		return Rocket{}, err
@@ -52,8 +57,9 @@ func (s Service) InsertRocket(ctx context.Context, rkt Rocket) (Rocket, error) {
 	return rkt, nil
 }
 
-// DeleteRocket -deletes a rocket from our inventory
+// DeleteRocket -deletes a rocket from our inventory.
 func (s Service) DeleteRocket(ctx context.Context, id string) error {
+	log.Println("Service | Delete Rocket (id):", id)
 	if err := s.Store.DeleteRocket(id); err != nil {
 		return err
 	}

@@ -17,11 +17,11 @@ func TestRocketService(t *testing.T) {
 		rocketStoreMock.
 			EXPECT().
 			GetRocketByID(id).
-			Return(Rocket{ID: id}, nil)
+			Return(Rocket{Id: id}, nil)
 		rocketService := New(rocketStoreMock)
-		rkt, err := rocketService.GetRocketByID(context.Background(), id)
+		rkt, err := rocketService.GetRocketById(context.Background(), id)
 		assert.NoError(t, err)
-		assert.Equal(t, "UUID-1", rkt.ID)
+		assert.Equal(t, "UUID-1", rkt.Id)
 	})
 
 	t.Run("tests insert rocket", func(t *testing.T) {
@@ -30,20 +30,20 @@ func TestRocketService(t *testing.T) {
 		rocketStoreMock.
 			EXPECT().
 			InsertRocket(Rocket{
-				ID: id,
+				Id: id,
 			}).
 			Return(Rocket{
-				ID: id,
+				Id: id,
 			}, nil)
 
 		rocketService := New(rocketStoreMock)
 		rkt, err := rocketService.InsertRocket(
 			context.Background(),
-			Rocket{ID: id},
+			Rocket{Id: id},
 		)
 
 		assert.NoError(t, err)
-		assert.Equal(t, "UUID-1", rkt.ID)
+		assert.Equal(t, "UUID-1", rkt.Id)
 	})
 
 	t.Run("tests delete rocket", func(t *testing.T) {
