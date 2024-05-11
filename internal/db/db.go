@@ -3,9 +3,9 @@ package db
 import (
 	"errors"
 	"fmt"
+	uuid "github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-	uuid "github.com/satori/go.uuid"
 	"go-course/grpc-service/internal/rocket"
 	"log"
 	"os"
@@ -62,6 +62,7 @@ func (s Store) GetRocketById(id string) (rocket.Rocket, error) {
 	row := s.db.QueryRow(`SELECT id, name, type FROM rockets WHERE id=$1;`, id)
 	err := row.Scan(&rkt.Id, &rkt.Name, &rkt.Type)
 	//err := s.db.Get(&rkt, `SELECT * FROM rockets WHERE id=$1`, id)
+
 	if err != nil {
 		log.Println(err.Error())
 		return rocket.Rocket{}, err
@@ -86,7 +87,7 @@ func (s Store) InsertRocket(rkt rocket.Rocket) (rocket.Rocket, error) {
 }
 
 func (s Store) DeleteRocket(id string) error {
-	uid, err := uuid.FromString(id)
+	uid, err := uuid.Parse(id)
 	if err != nil {
 		return err
 	}

@@ -24,7 +24,7 @@ type Store interface {
 	DeleteRocket(id string) error
 }
 
-// Service - our rocket service, responsible for updating.
+// Service - our rocket service, responsible for updating
 // the rocket inventory
 type Service struct {
 	Store Store `json:"store"`

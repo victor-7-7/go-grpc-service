@@ -13,7 +13,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func (s *Store) Migrate() error {
+func (s Store) Migrate() error {
 	driver, err := postgres.WithInstance(s.db.DB, &postgres.Config{})
 	if err != nil {
 		return err
